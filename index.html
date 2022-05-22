@@ -24,6 +24,7 @@
         padding: 8px 16px;
       }
     </style>
+    <script src="Blob.js"></script>
     <script src="FileSaver.js"></script>
   </head>
   <body>
@@ -271,6 +272,12 @@
         }
       }
       function generateResult() {
+        if (day1.length > 0) {
+          var confirmRegen = confirm("已经有结果了，确认重新生成？");
+          if (!confirmRegen) {
+            return;
+          }
+        }
         var result = candidates.slice();
         shuffleArray(result);
         day1 = result.slice(0, 70);

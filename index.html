@@ -1,7 +1,331 @@
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>恒昌花园出入证名单生成器</title>
+    <link rel="stylesheet" href="typo.css">
+    <style>
+      .main {
+        padding: 16px;
+      }
+      h1 {
+        font-size: 32px;
+        font-weight: bold;
+      }
+      h3 {
+        font-size: 32px;
+        font-weight: bold;
+      }
+      .block {
+        padding: 16px;
+        font-size: 24px;
+      }
+      button {
+        font-size: 24px;
+        padding: 8px 16px;
+      }
+    </style>
+    <script src="FileSaver.js"></script>
   </head>
   <body>
-    Hello World!
+    <div id="main" class="main">
+      <div class="block">
+        <h1>恒昌花园出入证名单生成器<h1>
+        <button id="btn-generate">随机生成</button>
+        <button id="btn-save">保存结果 (txt)</button>
+        <button id="btn-save-csv">保存结果 (csv)</button>
+        <button id="btn-clear">清除结果</button>
+      </div>
+      <div id="result">
+        <div class="block">
+          <h3>5 月 24 日</h3>
+          <div id="list-1">
+          </div>
+        </div>
+        <div class="block">
+          <h3>5 月 25 日</h3>
+          <div id="list-2">
+          </div>
+        </div>
+        <div class="block">
+          <h3>5 月 26 日</h3>
+          <div id="list-3">
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var candidates = [
+        'A201',
+        'A301',
+        'A302',
+        'A401',
+        'A404',
+        'A501',
+        'A502',
+        'A503',
+        'A504',
+        'A601',
+        'A602',
+        'A603',
+        'A604',
+        'A701',
+        'A702',
+        'A703',
+        'A704',
+        'A801',
+        'A802',
+        'A803',
+        'A804',
+        'A901',
+        'A902',
+        'A904',
+        'A1001',
+        'A1002',
+        'A1003',
+        'A1101',
+        'A1102',
+        'A1104',
+        'A1201',
+        'A1202',
+        'A1203',
+        'A1204',
+        'A1301',
+        'A1303',
+        'A1304',
+        'A1401',
+        'A1402',
+        'A1404',
+        'A1501',
+        'A1502',
+        'A1503',
+        'A1504',
+        'A1601',
+        'A1602',
+        'A1603',
+        'A1604',
+        'A1701',
+        'A1702',
+        'A1703',
+        'A1704',
+        'A1801',
+        'A1802',
+        'A1804',
+        'A1901',
+        'A1902',
+        'A1903',
+        'A1904',
+        'A2001',
+        'A2002',
+        'A2003',
+        'A2004',
+        'A2101',
+        'A2102',
+        'A2103',
+        'A2104',
+        'A2201',
+        'A2202',
+        'A2203',
+        'A2204',
+        'A2301',
+        'A2302',
+        'A2303',
+        'A2401',
+        'A2402',
+        'A2403',
+        'A2501',
+        'A2502',
+        'A2503',
+        'A2504',
+        'A2601',
+        'A2602',
+        'A2603',
+        'A2604',
+        'B204',
+        'B301',
+        'B303',
+        'B304',
+        'B305',
+        'B306',
+        'B401',
+        'B402',
+        'B406',
+        'B501',
+        'B502',
+        'B503',
+        'B504',
+        'B505',
+        'B506',
+        'B601',
+        'B602',
+        'B603',
+        'B604',
+        'B605',
+        'B606',
+        'B701',
+        'B703',
+        'B706',
+        'B801',
+        'B802',
+        'B803',
+        'B806',
+        'B901',
+        'B902',
+        'B903',
+        'B904',
+        'B906',
+        'B1002',
+        'B1004',
+        'B1005',
+        'B1006',
+        'B1101',
+        'B1103',
+        'B1104',
+        'B1203',
+        'B1205',
+        'B1206',
+        'B1301',
+        'B1302',
+        'B1303',
+        'B1305',
+        'B1402',
+        'B1403',
+        'B1404',
+        'B1405',
+        'B1406',
+        'B1501',
+        'B1502',
+        'B1503',
+        'B1505',
+        'B1506',
+        'B1601',
+        'B1604',
+        'B1606',
+        'B1701',
+        'B1702',
+        'B1703',
+        'B1704',
+        'B1705',
+        'B1706',
+        'B1801',
+        'B1802',
+        'B1804',
+        'B1805',
+        'B1806',
+        'B1902',
+        'B1903',
+        'B1905',
+        'B1906',
+        'B2001',
+        'B2002',
+        'B2003',
+        'B2004',
+        'B2005',
+        'B2101',
+        'B2102',
+        'B2103',
+        'B2104',
+        'B2105',
+        'B2106',
+        'B2201',
+        'B2204',
+        'B2205',
+        'B2301',
+        'B2302',
+        'B2303',
+        'B2304',
+        'B2305',
+        'B2306',
+        'B2401',
+        'B2402',
+        'B2404',
+        'B2405',
+        'B2406',
+        'B2501',
+        'B2502',
+        'B2503',
+        'B2504',
+        'B2505',
+        'B2506',
+        'B2602',
+        'B2603',
+        'B2604',
+        'B2605',
+        'B2606'
+      ];
+      var day1 = [];
+      var day2 = [];
+      var day3 = [];
+      try {
+        day1 = JSON.parse(localStorage.getItem('result_day1')) || [];
+        day2 = JSON.parse(localStorage.getItem('result_day2')) || [];
+        day3 = JSON.parse(localStorage.getItem('result_day3')) || [];
+      } catch (error) {
+        console.info(error);
+      }
+      function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+      }
+      function generateResult() {
+        var result = candidates.slice();
+        shuffleArray(result);
+        day1 = result.slice(0, 70);
+        day2 = result.slice(70, 140);
+        day3 = result.slice(140);
+        localStorage.setItem('result_day1', JSON.stringify(day1));
+        localStorage.setItem('result_day2', JSON.stringify(day2));
+        localStorage.setItem('result_day3', JSON.stringify(day3));
+        renderResult();
+      }
+      function clearResult() {
+        day1 = [];
+        day2 = [];
+        day3 = [];
+        localStorage.setItem('result_day1', JSON.stringify(day1));
+        localStorage.setItem('result_day2', JSON.stringify(day2));
+        localStorage.setItem('result_day3', JSON.stringify(day3));
+        renderResult();
+      }
+      function renderResult() {
+        document.getElementById('list-1').innerHTML = day1.join(', ') + '<br /> 共计' + day1.length + '户';
+        document.getElementById('list-2').innerHTML = day2.join(', ') + '<br /> 共计' + day2.length + '户';
+        document.getElementById('list-3').innerHTML = day3.join(', ') + '<br /> 共计' + day3.length + '户';
+      }
+      function saveResultAsPlainText() {
+        var result = '';
+        result += '5月24日' + '\n';
+        result += day1.join(', ') + '\n';
+        result += '5月25日' + '\n';
+        result += day2.join(', ') + '\n';
+        result += '5月26日' + '\n';
+        result += day3.join(', ') + '\n';
+        var myBlob = new Blob([result], {type: "text/plain;charset=utf-8"});
+        saveAs(myBlob, "result.txt")
+      }
+      function saveResultAsCSV() {
+        var result = '';
+        result += '户号,日期\n';
+        for (var i = 0; i < day1.length; i++) {
+          result += day1[i] + ',' + '5月24日' + '\n';
+        }
+        for (var i = 0; i < day2.length; i++) {
+          result += day2[i] + ',' + '5月25日' + '\n';
+        }
+        for (var i = 0; i < day3.length; i++) {
+          result += day3[i] + ',' + '5月26日' + '\n';
+        }
+        var myBlob = new Blob([result], {type: "text/plain;charset=utf-8"});
+        saveAs(myBlob, "result.csv")
+      }
+      document.getElementById('btn-generate').addEventListener('click', generateResult);
+      document.getElementById('btn-clear').addEventListener('click', clearResult);
+      document.getElementById('btn-save').addEventListener('click', saveResultAsPlainText);
+      document.getElementById('btn-save-csv').addEventListener('click', saveResultAsCSV);
+      renderResult();
+    </script>
   </body>
 </html>
